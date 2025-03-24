@@ -9,9 +9,9 @@ from sqlalchemy.pool import StaticPool
 # Ajouter le répertoire parent au PYTHONPATH
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from app.main import app
 from app.database.config import Base
 from app.dependencies import get_db
+from app.main import app
 
 # Configuration de la base de données de test
 SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
@@ -30,17 +30,11 @@ def override_get_db():
     finally:
         db.close()
 
-app.dependency_overrides[get_db] = override_get_db
-
 @pytest.fixture(autouse=True)
 def test_db():
     Base.metadata.create_all(bind=engine)
     yield
     Base.metadata.drop_all(bind=engine)
-
-@pytest.fixture
-def client():
-    return TestClient(app)
 
 @pytest.fixture
 def test_session():

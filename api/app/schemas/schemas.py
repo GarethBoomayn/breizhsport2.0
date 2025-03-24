@@ -13,12 +13,25 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     password: str = Field(min_length=8)
 
+class UserUpdate(UserBase):
+    email: EmailStr | None = None
+    username: str | None = None
+    full_name: str | None = None
+    password: str | None = Field(None, min_length=8)
+
 class User(UserBase):
     id: int
     is_active: bool
     is_admin: bool
     created_at: datetime
     updated_at: datetime
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    email: str | None = None
 
 # Category schemas
 class CategoryBase(BaseModel):

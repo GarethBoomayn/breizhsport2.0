@@ -23,7 +23,6 @@ COPY app/ ./app/
 COPY tests/ ./tests/
 COPY alembic/ ./alembic/
 COPY alembic.ini .
-COPY init_test_data.py .
 
 # Exposer le port
 EXPOSE 8000

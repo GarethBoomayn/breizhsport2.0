@@ -5,29 +5,30 @@ from sqlalchemy import text
 
 from .database.config import engine, Base, get_db
 from .models import models
-from .routes import products, categories
+from .routes import products, categories, auth
 
 # Créer les tables dans la base de données
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
-    title="Breizhsport API",
-    description="API pour l'application e-commerce Breizhsport",
+    title="BreizhSport API",
+    description="API pour l'application e-commerce BreizhSport",
     version="2.0.0"
 )
 
 # Configuration CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # À configurer en production
+    allow_origins=["*"],  # À remplacer par les domaines autorisés en production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 # Inclure les routes
-app.include_router(products.router)
+app.include_router(auth.router)
 app.include_router(categories.router)
+app.include_router(products.router)
 
 @app.get("/")
 async def root():

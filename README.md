@@ -84,6 +84,8 @@ breizhsport2.0/
 │   │   ├── routes/         # Routes API
 │   │   ├── schemas/        # Schémas Pydantic
 │   │   ├── scripts/        # Scripts utilitaires
+│   │   │   ├── init_db.py        # Initialisation de la base de données
+│   │   │   └── init_test_data.py # Script d'initialisation des données de test
 │   │   ├── dependencies.py # Dépendances FastAPI
 │   │   └── main.py        # Point d'entrée de l'application
 │   ├── tests/             # Tests unitaires et d'intégration

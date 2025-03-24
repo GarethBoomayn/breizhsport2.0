@@ -1,0 +1,57 @@
+Domaine,Problématiques majeures,Solutions recommandées,Outils/Technologies
+Performance,"Charge utilisateurs limitée
+Dimensionnement conteneurs inadapté
+Requêtes BDD non optimisées","Tests de charge
+Scaling horizontal
+Optimisation requêtes et caching","k6, JMeter
+Kubernetes/Docker Swarm
+Redis, index PostgreSQL"
+Sécurité,"Vulnérabilités potentielles
+Gestion des secrets non sécurisée
+Authentification basique","Audits de sécurité
+Gestion centralisée des secrets
+Renforcement authentification (MFA, rotation)","OWASP ZAP, SonarQube
+HashiCorp Vault
+JWT avec limites de tentatives"
+Données,"Migration données test vers production
+Absence de procédures de backup
+Conformité RGPD incomplète","Scripts de migration avec versioning
+Backups automatisés avec tests
+Anonymisation et politique de rétention","Alembic
+pgBackRest, cron jobs
+Outils d'anonymisation"
+Infrastructure,"Déploiements manuels
+Environnements hétérogènes
+Configurations en dur","CI/CD automatisé
+Infrastructure as Code
+Gestion externe des configurations","GitHub Actions/GitLab CI
+Terraform
+Variables d'env, ConfigMaps"
+Support,"Monitoring incomplet
+Logs insuffisants
+Documentation opérationnelle limitée","Monitoring centralisé
+Centralisation des logs
+Playbooks d'incidents","Prometheus, Grafana
+ELK Stack
+Runbooks documentés"
+UX,"Accessibilité non vérifiée
+Performance frontend non optimisée
+Tests navigateurs limités","Audit WCAG
+Optimisations assets
+Tests cross-browser","Lighthouse
+WebPack optimizations
+Playwright, Cypress"
+Dépendances,"Versions non verrouillées
+Bibliothèques obsolètes
+Licences non auditées","Lock files stricts
+Analyse automatique des vulnérabilités
+Vérification des licences","npm audit/pip-audit
+Dependabot, Snyk
+FOSSA"
+API,"Documentation API informelle
+Absence rate limiting
+Stratégie de versioning absente","Spécification formelle
+Limites de requêtes
+API versioning explicite","OpenAPI/Swagger
+NGINX/Redis rate limiting
+URI/Headers versioning"

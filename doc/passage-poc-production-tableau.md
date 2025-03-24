@@ -1,0 +1,12 @@
+# Tableau synthétique : Transition POC vers Production - Breizhsport 2.0
+
+| Domaine | Problématiques majeures | Solutions recommandées | Outils/Technologies |
+|---------|-------------------------|------------------------|---------------------|
+| **Performance** | • Charge utilisateurs limitée<br>• Dimensionnement conteneurs inadapté<br>• Requêtes BDD non optimisées | • Tests de charge<br>• Scaling horizontal<br>• Optimisation requêtes et caching | • k6, JMeter<br>• Kubernetes/Docker Swarm<br>• Redis, index PostgreSQL |
+| **Sécurité** | • Vulnérabilités potentielles<br>• Gestion des secrets non sécurisée<br>• Authentification basique | • Audits de sécurité<br>• Gestion centralisée des secrets<br>• Renforcement authentification (MFA, rotation) | • OWASP ZAP, SonarQube<br>• HashiCorp Vault<br>• JWT avec limites de tentatives |
+| **Données** | • Migration données test vers production<br>• Absence de procédures de backup<br>• Conformité RGPD incomplète | • Scripts de migration avec versioning<br>• Backups automatisés avec tests<br>• Anonymisation et politique de rétention | • Alembic<br>• pgBackRest, cron jobs<br>• Outils d'anonymisation |
+| **Infrastructure** | • Déploiements manuels<br>• Environnements hétérogènes<br>• Configurations en dur | • CI/CD automatisé<br>• Infrastructure as Code<br>• Gestion externe des configurations | • GitHub Actions/GitLab CI<br>• Terraform<br>• Variables d'env, ConfigMaps |
+| **Support** | • Monitoring incomplet<br>• Logs insuffisants<br>• Documentation opérationnelle limitée | • Monitoring centralisé<br>• Centralisation des logs<br>• Playbooks d'incidents | • Prometheus, Grafana<br>• ELK Stack<br>• Runbooks documentés |
+| **UX** | • Accessibilité non vérifiée<br>• Performance frontend non optimisée<br>• Tests navigateurs limités | • Audit WCAG<br>• Optimisations assets<br>• Tests cross-browser | • Lighthouse<br>• WebPack optimizations<br>• Playwright, Cypress |
+| **Dépendances** | • Versions non verrouillées<br>• Bibliothèques obsolètes<br>• Licences non auditées | • Lock files stricts<br>• Analyse automatique des vulnérabilités<br>• Vérification des licences | • npm audit/pip-audit<br>• Dependabot, Snyk<br>• FOSSA |
+| **API** | • Documentation API informelle<br>• Absence rate limiting<br>• Stratégie de versioning absente | • Spécification formelle<br>• Limites de requêtes<br>• API versioning explicite | • OpenAPI/Swagger<br>• NGINX/Redis rate limiting<br>• URI/Headers versioning |

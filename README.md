@@ -1,9 +1,10 @@
 # Breizhsport 2.0
 
-Application e-commerce moderne pour Breizhsport, développée avec FastAPI et Docker.
+Application e-commerce moderne pour Breizhsport, développée avec FastAPI, Vue.js et Docker.
 
 ## Architecture
 
+- Frontend: Vue.js 3 avec TypeScript et Tailwind CSS
 - Backend: FastAPI (Python 3.11)
 - Cache: Redis
 - Base de données: PostgreSQL
@@ -19,6 +20,7 @@ Application e-commerce moderne pour Breizhsport, développée avec FastAPI et Do
   - Mise en place du reverse proxy Nginx
   - Configuration de la base de données PostgreSQL
   - Configuration du cache Redis
+  - Intégration du frontend Vue.js avec le backend
 
 - **API**
   - Configuration FastAPI avec dernières versions (SQLAlchemy 2.0, Pydantic 2.0)
@@ -26,6 +28,16 @@ Application e-commerce moderne pour Breizhsport, développée avec FastAPI et Do
   - Tests unitaires avec pytest
   - Gestion des erreurs HTTP
   - Configuration CORS
+  - Système d'authentification avec JWT
+
+- **Frontend**
+  - Interface utilisateur moderne avec Vue 3 et Composition API
+  - Styling avec Tailwind CSS 4.0
+  - Routing avec Vue Router
+  - Gestion d'état avec Pinia
+  - Support TypeScript complet
+  - Tests unitaires avec Vitest
+  - Tests E2E avec Nightwatch
 
 - **Modèles de données**
   - Utilisateurs
@@ -36,7 +48,6 @@ Application e-commerce moderne pour Breizhsport, développée avec FastAPI et Do
 
 ### En cours de développement
 
-- Authentification utilisateur
 - Gestion des produits
 - Système de panier avec Redis
 - Gestion des commandes
@@ -48,7 +59,8 @@ Application e-commerce moderne pour Breizhsport, développée avec FastAPI et Do
 
 - Docker
 - Docker Compose
-- Python 3.11+
+- Python 3.11+ (pour le développement local)
+- Node.js 22+ (pour le développement local)
 
 ## Installation
 
@@ -69,7 +81,11 @@ REDIS_URL=redis://cache:6379/0
 docker-compose up --build
 ```
 
-L'API sera accessible à l'adresse : http://localhost:80
+L'application sera accessible à l'adresse : http://localhost:80
+- Frontend: http://localhost:80
+- API: http://localhost:80/api
+- API directe: http://localhost:8000
+- Frontend dev server: http://localhost:5173
 
 ## Structure du Projet
 
@@ -93,6 +109,19 @@ breizhsport2.0/
 │   ├── alembic.ini        # Configuration Alembic
 │   ├── Dockerfile         # Dockerfile pour l'API
 │   └── requirements.txt   # Dépendances Python
+├── frontend/              # Application frontend Vue.js
+│   ├── src/              # Code source du frontend
+│   │   ├── assets/      # Ressources statiques (CSS, images)
+│   │   ├── components/  # Composants Vue réutilisables
+│   │   ├── router/      # Configuration des routes
+│   │   ├── stores/      # Stores Pinia pour la gestion d'état
+│   │   ├── views/       # Composants de pages
+│   │   ├── App.vue      # Composant racine
+│   │   └── main.ts      # Point d'entrée de l'application
+│   ├── public/          # Fichiers statiques publics
+│   ├── tests/           # Tests unitaires et E2E
+│   ├── Dockerfile       # Dockerfile pour le frontend
+│   └── package.json     # Dépendances Node.js
 ├── nginx/                 # Configuration Nginx
 │   └── nginx.conf        # Configuration du reverse proxy
 ├── docker-compose.yml     # Configuration Docker Compose
@@ -101,25 +130,74 @@ breizhsport2.0/
 
 ## API Endpoints
 
+### Authentification
+
+- `POST /api/auth/register` - Inscription d'un nouvel utilisateur
+- `POST /api/auth/token` - Connexion et génération de token JWT
+
 ### Catégories
 
-- `GET /categories/` - Liste toutes les catégories
-- `GET /categories/{id}` - Récupère une catégorie par son ID
-- `POST /categories/` - Crée une nouvelle catégorie
-- `PUT /categories/{id}` - Met à jour une catégorie
-- `DELETE /categories/{id}` - Supprime une catégorie
+- `GET /api/categories/` - Liste toutes les catégories
+- `GET /api/categories/{id}` - Récupère une catégorie par son ID
+- `POST /api/categories/` - Crée une nouvelle catégorie
+- `PUT /api/categories/{id}` - Met à jour une catégorie
+- `DELETE /api/categories/{id}` - Supprime une catégorie
 
 ## Tests
 
-Pour exécuter les tests :
+### Tests Backend
+
+Pour exécuter les tests de l'API :
 
 ```bash
 # Dans le conteneur API
 docker exec breizhsport20_api_1 sh -c 'cd /app && PYTHONPATH=/app pytest -v'
 ```
 
+### Tests Frontend
+
+Pour exécuter les tests unitaires du frontend :
+
+```bash
+# Dans le conteneur Frontend
+docker exec breizhsport20_frontend_1 sh -c 'cd /app && npm run test:unit'
+```
+
+Pour exécuter les tests E2E du frontend :
+
+```bash
+# Dans le conteneur Frontend
+docker exec breizhsport20_frontend_1 sh -c 'cd /app && npm run test:e2e'
+```
+
+## Développement local
+
+### Backend
+
+```bash
+cd api
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
 ## Technologies utilisées
 
+- **Vue.js**: Framework JavaScript progressif pour les interfaces utilisateur
+- **TypeScript**: Typage statique pour JavaScript
+- **Tailwind CSS**: Framework CSS utilitaire
+- **Vite**: Outil de build ultra-rapide
+- **Pinia**: Bibliothèque de gestion d'état pour Vue
+- **Vue Router**: Routeur officiel pour Vue.js
+- **Vitest**: Framework de test unitaire pour Vite
+- **Nightwatch**: Framework de test E2E
 - **FastAPI**: Framework API moderne et performant
 - **SQLAlchemy**: ORM SQL avec support asynchrone
 - **Pydantic**: Validation de données et sérialisation

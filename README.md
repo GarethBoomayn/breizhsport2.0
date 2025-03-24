@@ -4,12 +4,13 @@ Application e-commerce moderne pour Breizhsport, développée avec FastAPI, Vue.
 
 ## Architecture
 
-- Frontend: Vue.js 3 avec TypeScript et Tailwind CSS
-- Backend: FastAPI (Python 3.11)
-- Cache: Redis
-- Base de données: PostgreSQL
-- Reverse Proxy: Nginx
-- Conteneurisation: Docker & Docker Compose
+- **Frontend**: Vue.js 3 avec TypeScript et Tailwind CSS
+- **Backend**: FastAPI (Python 3.11)
+- **Cache**: Redis
+- **Base de données**: PostgreSQL
+- **Reverse Proxy**: Nginx
+- **Monitoring**: Prometheus, Grafana, Jaeger (OpenTelemetry)
+- **Conteneurisation**: Docker & Docker Compose
 
 ## État d'avancement
 
@@ -25,6 +26,7 @@ Application e-commerce moderne pour Breizhsport, développée avec FastAPI, Vue.
 - **API**
   - Configuration FastAPI avec dernières versions (SQLAlchemy 2.0, Pydantic 2.0)
   - Gestion complète des catégories (CRUD)
+  - Gestion des produits (CRUD)
   - Tests unitaires avec pytest
   - Gestion des erreurs HTTP
   - Configuration CORS
@@ -46,13 +48,19 @@ Application e-commerce moderne pour Breizhsport, développée avec FastAPI, Vue.
   - Commandes
   - Articles de commande
 
+- **Monitoring et Observabilité**
+  - Logs structurés en JSON
+  - Métriques Prometheus pour les requêtes HTTP et la base de données
+  - Métriques système (CPU, mémoire, disque)
+  - Tracing distribué avec OpenTelemetry et Jaeger
+  - Dashboards Grafana préconfigurés
+  - Endpoint de health check pour surveiller l'état de l'application
+
 ### En cours de développement
 
-- Gestion des produits
 - Système de panier avec Redis
 - Gestion des commandes
 - Pipeline CI/CD
-- Monitoring et logging
 - Tests de performance
 
 ## Prérequis
@@ -66,7 +74,7 @@ Application e-commerce moderne pour Breizhsport, développée avec FastAPI, Vue.
 
 1. Cloner le repository
 ```bash
-git clone [url-du-repo]
+git clone https://github.com/GarethBoomayn/breizhsport2.0.git
 cd breizhsport2.0
 ```
 
@@ -74,6 +82,8 @@ cd breizhsport2.0
 ```env
 DATABASE_URL=postgresql://postgres:postgres@db:5432/breizhsport
 REDIS_URL=redis://cache:6379/0
+ENVIRONMENT=development
+OTLP_ENDPOINT=http://jaeger:4318/v1/traces
 ```
 
 3. Lancer l'application avec Docker Compose
@@ -81,11 +91,20 @@ REDIS_URL=redis://cache:6379/0
 docker-compose up --build
 ```
 
+4. (Optionnel) Configurer l'infrastructure de monitoring
+```bash
+chmod +x setup-monitoring.sh
+./setup-monitoring.sh
+```
+
 L'application sera accessible à l'adresse : http://localhost:80
 - Frontend: http://localhost:80
 - API: http://localhost:80/api
 - API directe: http://localhost:8000
 - Frontend dev server: http://localhost:5173
+- Prometheus: http://localhost:9090
+- Grafana: http://localhost:3000 (admin/admin)
+- Jaeger: http://localhost:16686
 
 ## Structure du Projet
 
@@ -93,55 +112,43 @@ L'application sera accessible à l'adresse : http://localhost:80
 breizhsport2.0/
 ├── api/                      # Service API principal
 │   ├── app/                 # Code source de l'API
+│   │   ├── auth/           # Authentification et sécurité
 │   │   ├── crud/           # Opérations CRUD
-│   │   │   └── category.py # Opérations CRUD pour les catégories
 │   │   ├── database/       # Configuration base de données
 │   │   ├── models/         # Modèles SQLAlchemy
+│   │   ├── monitoring/     # Monitoring et observabilité
+│   │   │   ├── logger.py   # Logs structurés en JSON
+│   │   │   ├── metrics.py  # Métriques Prometheus
+│   │   │   ├── system.py   # Métriques système
+│   │   │   └── tracing.py  # Tracing distribué (OpenTelemetry)
 │   │   ├── routes/         # Routes API
-│   │   ├── schemas/        # Schémas Pydantic
-│   │   ├── scripts/        # Scripts utilitaires
-│   │   │   ├── init_db.py        # Initialisation de la base de données
-│   │   │   └── init_test_data.py # Script d'initialisation des données de test
-│   │   ├── dependencies.py # Dépendances FastAPI
-│   │   └── main.py        # Point d'entrée de l'application
-│   ├── tests/             # Tests unitaires et d'intégration
-│   ├── alembic/           # Migrations de base de données
-│   ├── alembic.ini        # Configuration Alembic
-│   ├── Dockerfile         # Dockerfile pour l'API
-│   └── requirements.txt   # Dépendances Python
-├── frontend/              # Application frontend Vue.js
-│   ├── src/              # Code source du frontend
-│   │   ├── assets/      # Ressources statiques (CSS, images)
-│   │   ├── components/  # Composants Vue réutilisables
-│   │   ├── router/      # Configuration des routes
-│   │   ├── stores/      # Stores Pinia pour la gestion d'état
-│   │   ├── views/       # Composants de pages
-│   │   ├── App.vue      # Composant racine
-│   │   └── main.ts      # Point d'entrée de l'application
-│   ├── public/          # Fichiers statiques publics
-│   ├── tests/           # Tests unitaires et E2E
-│   ├── Dockerfile       # Dockerfile pour le frontend
-│   └── package.json     # Dépendances Node.js
-├── nginx/                 # Configuration Nginx
-│   └── nginx.conf        # Configuration du reverse proxy
-├── docker-compose.yml     # Configuration Docker Compose
-└── README.md             # Documentation
+│   │   │   ├── auth.py     # Endpoints d'authentification
+│   │   │   ├── categories.py # Gestion des catégories
+│   │   │   ├── health.py   # Health check
+│   │   │   └── products.py # Gestion des produits
+│   │   └── schemas/        # Schémas Pydantic
+│   ├── tests/              # Tests unitaires et d'intégration
+│   └── Dockerfile          # Configuration Docker pour l'API
+├── frontend/               # Application frontend Vue.js
+│   ├── src/                # Code source du frontend
+│   │   ├── assets/         # Ressources statiques
+│   │   ├── components/     # Composants Vue
+│   │   ├── router/         # Configuration des routes
+│   │   ├── stores/         # Stores Pinia
+│   │   └── views/          # Vues de l'application
+│   └── Dockerfile          # Configuration Docker pour le frontend
+├── monitoring/             # Configuration des outils de monitoring
+│   ├── grafana/            # Configuration Grafana
+│   │   ├── dashboards/     # Dashboards préconfigurés
+│   │   └── provisioning/   # Configuration des sources de données
+│   └── prometheus/         # Configuration Prometheus
+│       └── prometheus.yml  # Configuration des cibles à scraper
+├── nginx/                  # Configuration du reverse proxy
+│   └── nginx.conf          # Configuration Nginx
+├── doc/                    # Documentation du projet
+├── docker-compose.yml      # Configuration Docker Compose
+└── setup-monitoring.sh     # Script de configuration du monitoring
 ```
-
-## API Endpoints
-
-### Authentification
-
-- `POST /api/auth/register` - Inscription d'un nouvel utilisateur
-- `POST /api/auth/token` - Connexion et génération de token JWT
-
-### Catégories
-
-- `GET /api/categories/` - Liste toutes les catégories
-- `GET /api/categories/{id}` - Récupère une catégorie par son ID
-- `POST /api/categories/` - Crée une nouvelle catégorie
-- `PUT /api/categories/{id}` - Met à jour une catégorie
-- `DELETE /api/categories/{id}` - Supprime une catégorie
 
 ## Tests
 
@@ -150,8 +157,8 @@ breizhsport2.0/
 Pour exécuter les tests de l'API :
 
 ```bash
-# Dans le conteneur API
-docker exec breizhsport20_api_1 sh -c 'cd /app && PYTHONPATH=/app pytest -v'
+cd api
+pytest
 ```
 
 ### Tests Frontend
@@ -159,52 +166,47 @@ docker exec breizhsport20_api_1 sh -c 'cd /app && PYTHONPATH=/app pytest -v'
 Pour exécuter les tests unitaires du frontend :
 
 ```bash
-# Dans le conteneur Frontend
-docker exec breizhsport20_frontend_1 sh -c 'cd /app && npm run test:unit'
+cd frontend
+npm run test:unit
 ```
 
 Pour exécuter les tests E2E du frontend :
 
 ```bash
-# Dans le conteneur Frontend
-docker exec breizhsport20_frontend_1 sh -c 'cd /app && npm run test:e2e'
-```
-
-## Développement local
-
-### Backend
-
-```bash
-cd api
-pip install -r requirements.txt
-uvicorn app.main:app --reload
-```
-
-### Frontend
-
-```bash
 cd frontend
-npm install
-npm run dev
+npm run test:e2e
 ```
 
-## Technologies utilisées
+## Monitoring et Observabilité
 
-- **Vue.js**: Framework JavaScript progressif pour les interfaces utilisateur
-- **TypeScript**: Typage statique pour JavaScript
-- **Tailwind CSS**: Framework CSS utilitaire
-- **Vite**: Outil de build ultra-rapide
-- **Pinia**: Bibliothèque de gestion d'état pour Vue
-- **Vue Router**: Routeur officiel pour Vue.js
-- **Vitest**: Framework de test unitaire pour Vite
-- **Nightwatch**: Framework de test E2E
-- **FastAPI**: Framework API moderne et performant
-- **SQLAlchemy**: ORM SQL avec support asynchrone
-- **Pydantic**: Validation de données et sérialisation
-- **Pytest**: Framework de test
-- **Alembic**: Gestion des migrations de base de données
-- **PostgreSQL**: Base de données relationnelle
-- **Redis**: Cache et stockage de sessions
-- **Nginx**: Reverse proxy et serveur web
-- **Docker**: Conteneurisation
-- **Docker Compose**: Orchestration de conteneurs
+### Logs structurés
+
+Les logs sont formatés en JSON et incluent des métadonnées comme le service, l'environnement et les identifiants de trace.
+
+### Métriques
+
+Les métriques suivantes sont collectées et exposées via Prometheus :
+
+- Métriques HTTP : nombre de requêtes, temps de réponse, statuts
+- Métriques de base de données : nombre de requêtes, temps d'exécution
+- Métriques système : utilisation CPU, mémoire, disque
+
+### Tracing distribué
+
+Le tracing distribué est implémenté avec OpenTelemetry et permet de suivre le parcours d'une requête à travers les différents services.
+
+### Dashboards
+
+Des dashboards Grafana préconfigurés sont disponibles pour visualiser les métriques de l'application.
+
+## Contribution
+
+1. Forker le projet
+2. Créer une branche pour votre fonctionnalité (`git checkout -b feature/amazing-feature`)
+3. Committer vos changements (`git commit -m 'Add some amazing feature'`)
+4. Pousser sur la branche (`git push origin feature/amazing-feature`)
+5. Ouvrir une Pull Request
+
+## Licence
+
+Ce projet est sous licence MIT. Voir le fichier LICENSE pour plus de détails.

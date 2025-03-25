@@ -87,13 +87,14 @@ onMounted(() => {
   <div class="container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold mb-8">Votre Panier</h1>
     
-    <div v-if="cartItems.length === 0" class="bg-white rounded-lg shadow p-6 text-center">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <div v-if="cartItems.length === 0" class="text-center py-12">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon-lg mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
       </svg>
-      <p class="text-lg mb-4">Votre panier est vide</p>
-      <router-link to="/" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg inline-block">
-        Continuer vos achats
+      <h2 class="text-xl font-semibold text-gray-800 mb-2">Votre panier est vide</h2>
+      <p class="text-gray-600 mb-6">Parcourez notre catalogue et ajoutez des produits à votre panier.</p>
+      <router-link to="/" class="inline-block px-6 py-3 bg-breizhblue-600 text-white rounded-lg hover:bg-breizhblue-700 transition duration-150">
+        Découvrir nos produits
       </router-link>
     </div>
     
@@ -114,15 +115,15 @@ onMounted(() => {
                   class="h-full w-full object-cover rounded"
                 >
                 <div v-else class="text-gray-400 text-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon-md mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 110 4 2 2 0 000-4H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </div>
               </div>
               
               <div class="flex-grow">
                 <h3 class="text-lg font-semibold mb-1">{{ item.name }}</h3>
-                <p class="text-blue-600 font-bold mb-2">{{ item.price.toFixed(2) }} €</p>
+                <p class="text-breizhblue-600 font-bold mb-2">{{ item.price.toFixed(2) }} €</p>
                 
                 <div class="flex items-center justify-between">
                   <div class="flex items-center">
@@ -143,9 +144,9 @@ onMounted(() => {
                   
                   <button 
                     @click="removeItem(item.id)" 
-                    class="text-red-600 hover:text-red-800"
+                    class="text-red-500 hover:text-red-700 transition duration-150"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon-md" viewBox="0 0 20 20" fill="currentColor">
                       <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
                     </svg>
                   </button>
@@ -156,16 +157,16 @@ onMounted(() => {
         </div>
         
         <div class="mt-4 flex justify-between">
-          <router-link to="/" class="text-blue-600 hover:text-blue-800 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+          <router-link to="/" class="flex items-center text-breizhblue-600 hover:text-breizhblue-800 transition duration-150">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon-md mr-1" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
             </svg>
             Continuer vos achats
           </router-link>
           
           <button 
             @click="clearCart" 
-            class="text-red-600 hover:text-red-800"
+            class="text-red-500 hover:text-red-700 transition duration-150"
           >
             Vider le panier
           </button>
@@ -196,7 +197,7 @@ onMounted(() => {
           
           <button 
             @click="checkout" 
-            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            class="w-full bg-breizhblue-600 hover:bg-breizhblue-700 text-white font-bold py-3 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
             :disabled="isCheckingOut"
           >
             <span v-if="isCheckingOut">Traitement en cours...</span>

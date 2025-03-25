@@ -75,7 +75,7 @@ onMounted(() => {
         <button 
           @click="filterByCategory(null)" 
           class="px-4 py-2 rounded-lg"
-          :class="selectedCategory === null ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'"
+          :class="selectedCategory === null ? 'bg-breizhblue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'"
         >
           Tous
         </button>
@@ -84,7 +84,7 @@ onMounted(() => {
           :key="category.id"
           @click="filterByCategory(category.id)"
           class="px-4 py-2 rounded-lg"
-          :class="selectedCategory === category.id ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'"
+          :class="selectedCategory === category.id ? 'bg-breizhblue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'"
         >
           {{ category.name }}
         </button>
@@ -102,7 +102,10 @@ onMounted(() => {
     </div>
 
     <div v-else-if="products.length === 0" class="text-center py-10">
-      <p class="text-lg">Aucun produit trouvé</p>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon-lg mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+      </svg>
+      <p class="text-lg text-gray-600">Aucun produit trouvé</p>
     </div>
 
     <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -115,7 +118,7 @@ onMounted(() => {
             class="h-full w-full object-cover"
           >
           <div v-else class="text-gray-400 text-center p-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon-lg mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
             <p>Pas d'image</p>
@@ -125,8 +128,8 @@ onMounted(() => {
           <h3 class="text-lg font-semibold mb-2 truncate">{{ product.name }}</h3>
           <p class="text-gray-600 text-sm mb-2 line-clamp-2">{{ product.description }}</p>
           <div class="flex justify-between items-center">
-            <span class="text-blue-600 font-bold">{{ product.price.toFixed(2) }} €</span>
-            <router-link :to="`/product/${product.id}`" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-lg text-sm">
+            <span class="text-breizhblue-600 font-bold">{{ product.price.toFixed(2) }} €</span>
+            <router-link :to="`/product/${product.id}`" class="bg-breizhblue-600 hover:bg-breizhblue-700 text-white px-3 py-1 rounded-lg text-sm">
               Voir
             </router-link>
           </div>
@@ -142,5 +145,6 @@ onMounted(() => {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  line-clamp: 2;
 }
 </style>

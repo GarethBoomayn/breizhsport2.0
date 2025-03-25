@@ -18,7 +18,8 @@ const login = async () => {
   error.value = ''
 
   try {
-    const response = await fetch('http://localhost:8000/auth/token', {
+    // Utiliser l'URL absolue avec le port 80 pour passer par Nginx
+    const response = await fetch('http://localhost/api/auth/token', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -30,8 +31,18 @@ const login = async () => {
     })
 
     if (!response.ok) {
-      const errorData = await response.json()
-      throw new Error(errorData.detail || 'Échec de connexion')
+      let errorMessage = 'Échec de connexion';
+      try {
+        // Vérifier si la réponse contient du JSON valide
+        const text = await response.text();
+        if (text) {
+          const errorData = JSON.parse(text);
+          errorMessage = errorData.detail || errorMessage;
+        }
+      } catch (parseError) {
+        console.error('Erreur lors du parsing de la réponse:', parseError);
+      }
+      throw new Error(errorMessage);
     }
 
     const data = await response.json()
@@ -63,7 +74,7 @@ const login = async () => {
         </h2>
         <p class="mt-2 text-center text-sm text-gray-600">
           Ou
-          <router-link to="/register" class="font-medium text-blue-600 hover:text-blue-500">
+          <router-link to="/register" class="font-medium text-breizhblue-600 hover:text-breizhblue-500">
             créez un nouveau compte
           </router-link>
         </p>
@@ -84,7 +95,7 @@ const login = async () => {
               autocomplete="email" 
               required 
               v-model="email"
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" 
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-breizhblue-500 focus:border-breizhblue-500 focus:z-10 sm:text-sm" 
               placeholder="Adresse email" 
             />
           </div>
@@ -97,7 +108,7 @@ const login = async () => {
               autocomplete="current-password" 
               required 
               v-model="password"
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" 
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-breizhblue-500 focus:border-breizhblue-500 focus:z-10 sm:text-sm" 
               placeholder="Mot de passe" 
             />
           </div>
@@ -106,7 +117,7 @@ const login = async () => {
         <div>
           <button 
             type="submit" 
-            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-breizhblue-600 hover:bg-breizhblue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-breizhblue-500"
             :disabled="loading"
           >
             <span v-if="loading">Connexion en cours...</span>

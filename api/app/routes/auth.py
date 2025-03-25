@@ -30,7 +30,7 @@ async def login_for_access_token(
         if not user:
             app_logger.warning(f"Échec d'authentification: {form_data.username}")
             # Incrémenter le compteur d'échecs d'authentification
-            auth_failure_total.labels(method="password").inc()
+            auth_failure_total.labels(method="password", reason="invalid_credentials").inc()
             
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -57,7 +57,7 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
         db_user = get_user_by_email(db, email=user.email)
         if db_user:
             app_logger.warning(f"Échec d'inscription - email déjà enregistré: {user.email}")
-            auth_failure_total.labels(method="register").inc()
+            auth_failure_total.labels(method="register", reason="email_already_registered").inc()
             
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,

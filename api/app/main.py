@@ -12,6 +12,7 @@ from .models import models
 from .routes import products, categories, auth, health
 from .monitoring import app_logger, setup_tracing, system_metrics_collector
 from .monitoring.metrics import http_requests_total, http_request_duration_seconds
+from .scripts.init_db import init_db
 
 # Créer les tables dans la base de données
 Base.metadata.create_all(bind=engine)
@@ -72,6 +73,7 @@ async def metrics():
 async def startup_event():
     system_metrics_collector.start()
     app_logger.info("Démarrage de l'application BreizhSport API")
+    init_db()
 
 # Arrêter le collecteur de métriques système à l'arrêt de l'application
 @app.on_event("shutdown")
